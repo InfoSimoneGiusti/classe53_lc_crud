@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
-});
+    return view('home');
+})->name('home');
 
+Route::resource('pasta', 'PastaController');
 
-Route::resource('test', 'TestController');

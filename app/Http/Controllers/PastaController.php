@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Pasta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redis;
 
-class TestController extends Controller
+class PastaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,10 @@ class TestController extends Controller
      */
     public function index()
     {
-        //
+
+        $pastas = Pasta::all();
+        return view('pasta.index', compact('pastas'));
+
     }
 
     /**
@@ -23,7 +28,7 @@ class TestController extends Controller
      */
     public function create()
     {
-        //
+        return view('pasta.create');
     }
 
     /**
@@ -34,7 +39,24 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $data = $request->all();
+
+        $pasta = new Pasta();
+        
+        /*$pasta->src = $data['src'];
+        $pasta->title = $data['title'];
+        $pasta->type = $data['type'];
+        $pasta->cooking_time = $data['cooking_time'];
+        $pasta->weight = $data['weight'];
+        $pasta->description = $data['description'];*/
+
+        $pasta->fill($data);
+
+        $pasta->save();
+
+        return redirect()->route('pasta.show', ['pastum' => $pasta->id]);
+
     }
 
     /**
@@ -43,9 +65,20 @@ class TestController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Pasta $pastum) //tecnica con dependency injection
     {
-        //
+
+        //select * from pastas where id = X
+        //$pastum = Pasta::find($id);
+
+        //if ($pastum) {
+
+            return view('pasta.show', compact('pastum'));
+
+        //} else {
+        //    abort(404);
+        //}
+
     }
 
     /**
@@ -56,7 +89,7 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
