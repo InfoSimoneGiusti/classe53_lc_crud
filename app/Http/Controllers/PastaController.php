@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Pasta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Validation\Rule;
 
 class PastaController extends Controller
 {
@@ -40,22 +41,36 @@ class PastaController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate(
+            [
+                'src' => 'required|url',
+                'title' => 'required|min:5',
+                'type' => ['required', Rule::in(['corte', 'cortissime', 'lunghe'])],
+                'cooking_time' => 'required|numeric|min:0',
+                'weight' => 'required|numeric|min:0',
+                'description' => 'required|min:20'
+            ]
+        );
+
         $data = $request->all();
 
         $pasta = new Pasta();
-        
+
         /*$pasta->src = $data['src'];
         $pasta->title = $data['title'];
         $pasta->type = $data['type'];
         $pasta->cooking_time = $data['cooking_time'];
         $pasta->weight = $data['weight'];
-        $pasta->description = $data['description'];*/
+        $pasta->description = $data['description'];
+        */
 
         $pasta->fill($data);
 
         $pasta->save();
 
-        return redirect()->route('pasta.show', ['pastum' => $pasta->id]);
+//        return redirect()->route('pasta.show', ['pastum' => $pasta->id]);
+
+        return redirect()->route('pasta.index')->with('status', 'Pasta creata!!');
 
     }
 
@@ -87,9 +102,20 @@ class PastaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    /*public function edit($id) //senza dependency injection
     {
+        $pasta = Pasta::find($id);
 
+        if ($pasta) {
+            return view('pasta.edit', compact('pasta'));
+        } else {
+            abort(404);
+        }
+
+    }*/
+
+    public function edit(Pasta $pastum) {
+        return view('pasta.edit', compact('pastum'));
     }
 
     /**
@@ -99,9 +125,37 @@ class PastaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Pasta $pastum)
     {
-        //
+
+        $request->validate(
+            [
+                'src' => 'required|url',
+                'title' => 'required|min:5',
+                'type' => ['required', Rule::in(['corte', 'cortissime', 'lunghe'])],
+                'cooking_time' => 'required|numeric|min:0',
+                'weight' => 'required|numeric|min:0',
+                'description' => 'required|min:20'
+            ]
+        );
+
+        
+        $data = $request->all();
+
+        /*$pastum->src = $data['src'];
+        $pastum->title = $data['title'];
+        $pastum->type = $data['type'];
+        $pastum->cooking_time = $data['cooking_time'];
+        $pastum->weight = $data['weight'];
+        $pastum->description = $data['description'];
+        */
+
+        $pastum->update($data);
+
+        $pastum->save();
+
+        return redirect()->route('pasta.show', ['pastum' => $pastum->id]);
+
     }
 
     /**
@@ -110,8 +164,13 @@ class PastaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pasta $pastum)
     {
-        //
+
+        $pastum->delete();
+
+        return redirect()->route('pasta.index')->with('status', 'Elemento correttamente cancellato!');
+
     }
+
 }

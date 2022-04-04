@@ -14,20 +14,20 @@
 
             <div class="mb-3">
                 <label for="src" class="form-label" >Indirizzo immagine</label>
-                <input required type="text" class="form-control" id="src" name="src" value="https://www.miosito.it">
+                <input type="text" class="form-control" id="src" name="src" value="{{old('src')}}" required>
             </div>
 
             <div class="mb-3">
                 <label for="title" class="form-label" >Nome del formato</label>
-                <input type="text" class="form-control" id="title" name="title" value="Pippo">
+                <input type="text" class="form-control" id="title" name="title" value="{{old('title')}}" required>
             </div>
 
             <div class="mb-3">
                 <div class="form-floating">
                     <select class="form-select" id="type" name="type">
-                        <option selected value="lunghe">Lunghe</option>
-                        <option value="corte">Corte</option>
-                        <option value="cortissime">Cortissime</option>
+                        <option {{(old('type') == 'lunghe') ? 'selected' : ''}} value="lunghe">Lunghe</option>
+                        <option {{(old('type') == 'corte') ? 'selected' : ''}} value="corte">Corte</option>
+                        <option {{(old('type') == 'cortissime') ? 'selected' : ''}} value="cortissime">Cortissime</option>
                     </select>
                     <label for="floatingSelect">Formato</label>
                 </div>
@@ -35,17 +35,19 @@
 
             <div class="mb-3">
                 <label for="cooking_time" class="form-label" >Tempo di cottura</label>
-                <input type="number" class="form-control" id="cooking_time" name="cooking_time" value="11">
+                <input type="number" class="form-control" id="cooking_time" name="cooking_time" value="{{old('cooking_time')}}" required>
             </div>
 
             <div class="mb-3">
                 <label for="weight" class="form-label" >Peso</label>
-                <input type="number" class="form-control" id="weight" name="weight" value="500">
+                <input type="number" class="form-control" id="weight" name="weight" value="{{old('weight')}}" required>
             </div>
 
 
             <div class="form-floating">
-                <textarea class="form-control" placeholder="Descrizione" id="description" name="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis cum iste perferendis. Harum architecto, quod velit autem fugiat id inventore amet alias sed ipsum consequuntur iste tempora quia, facere placeat!</textarea>
+                <textarea class="form-control" placeholder="Descrizione" id="description" name="description" required>
+                    {{old('description')}}
+                </textarea>
             </div>
 
             <button type="submit" class="btn btn-primary">Invia</button>
