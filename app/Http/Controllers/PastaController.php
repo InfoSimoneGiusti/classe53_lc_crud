@@ -136,10 +136,10 @@ class PastaController extends Controller
                 'cooking_time' => 'required|numeric|min:0',
                 'weight' => 'required|numeric|min:0',
                 'description' => 'required|min:20'
-            ]
+            ],
+            ['src.required' => 'Url non può essere vuoto!']
         );
 
-        
         $data = $request->all();
 
         /*$pastum->src = $data['src'];
@@ -172,5 +172,6 @@ class PastaController extends Controller
         return redirect()->route('pasta.index')->with('status', 'Elemento correttamente cancellato!');
 
     }
+
 
 }

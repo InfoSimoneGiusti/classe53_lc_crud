@@ -15,9 +15,16 @@
             @csrf
             @method('PUT')
 
-            <div class="mb-3">
+            <div class="mb-3 has-validation">
                 <label for="src" class="form-label" >Indirizzo immagine</label>
-                <input required type="text" class="form-control" id="src" name="src" value="{{old('src', $pastum->src)}}">
+                <input type="text" class="form-control @error('src') is-invalid @enderror " id="src" name="src" value="{{old('src', $pastum->src)}}">
+
+                @error('src')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+
             </div>
 
             <div class="mb-3">

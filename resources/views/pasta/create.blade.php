@@ -19,7 +19,7 @@
 
             <div class="mb-3">
                 <label for="title" class="form-label" >Nome del formato</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{old('title')}}" required>
+                <input type="text" class="form-control" id="title" name="title" value="{{old('title')}}" >
             </div>
 
             <div class="mb-3">
